@@ -6,6 +6,15 @@
         $imdb_rating = get_field('imdb_rating');
         $synopsis = get_field('synopsis');
         $cast = get_field('cast');
+        $trailer = get_field('trailer');
+
+        function get_youtube_id($url) {
+            $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i';
+            preg_match($pattern, $url, $matches);
+            return isset($matches[1]) ? $matches[1] : false;
+        }
+        
+        $youtube_id = $trailer ? get_youtube_id($trailer) : false;
     ?>
         <div class="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
             <div class="md:flex">
@@ -42,11 +51,25 @@
                     
                     <div class="space-y-6">
                         <div>
-                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Synopsis</h2>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Trailer</h2>
                             <div class="text-gray-600 dark:text-gray-300 leading-relaxed">
                                 <?php echo nl2br(esc_html($synopsis)); ?>
                             </div>
                         </div>
+
+                        <?php if ($youtube_id) : ?>
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Trailer</h2>
+                                <div class="aspect-video">
+                                    <iframe class="w-full h-full rounded-lg shadow-lg" 
+                                            src="https://www.youtube.com/embed/<?php echo esc_attr($youtube_id); ?>" 
+                                            title="YouTube video player" 
+                                            frameborder="0" 
+                                            allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         
                         <div>
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Cast</h2>

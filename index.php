@@ -42,6 +42,7 @@
         while ($movies_query->have_posts()) : $movies_query->the_post();
             $year = get_field('year');
             $imdb_rating = get_field('imdb_rating');
+            $trailer = get_field('trailer');
             ?>
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
                 <a href="<?php the_permalink(); ?>" class="block">
@@ -58,8 +59,18 @@
                         }
                         ?>
                     </div>
-                    <div class="p-4">
-                        <h2 class="text-lg font-semibold mb-2 line-clamp-2 min-h-[3.5rem] text-gray-900 dark:text-white"><?php the_title(); ?></h2>
+                    <div class="relative p-4">
+                        <div class="flex justify-between">
+                            <h2 class="text-lg font-semibold mb-2 line-clamp-2 min-h-[3.5rem] text-gray-900 dark:text-white"><?php the_title(); ?></h2>
+                            <?php if ($trailer) : ?>
+                                <div class="relative group">
+                                    <div class="cursor-default">🎬</div>
+                                    <div class="absolute hidden group-hover:block bg-black text-white text-xs rounded py-1 px-2 right-0 -top-8 min-w-max">
+                                        Trailer available!
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300">
                             <p>Year: <?php echo esc_html($year); ?></p>
                             <p class="flex items-center">
